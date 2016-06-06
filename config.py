@@ -1,5 +1,6 @@
 from flask import Flask
 from logging.handlers import RotatingFileHandler, SMTPHandler
+from flask_mail import Mail
 from admin.views import admin
 from management.views import management
 import logging
@@ -14,6 +15,8 @@ class Config(object):
     SESSION_COOKIE_NAME = 'app_session'
     SESSION_COOKIE_PATH = '/'
     THREADS_PER_PAGE = 2
+    MAIL_SERVER = 'mail.redtone.com'
+    MAIL_PORT = 587
 
 class ProductionConfig(Config):
     SESSION_COOKIE_PATH = '/app'
@@ -22,6 +25,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
 
 app.config.from_object(DevelopmentConfig)
+mail = Mail(app)
 
 formatter = logging.Formatter("[%(asctime)s] %(levelname)s [%(pathname)s:%(lineno)s] %(message)s")
 handler = RotatingFileHandler('app.log', maxBytes=10000, backupCount=1)

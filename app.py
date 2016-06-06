@@ -1,7 +1,8 @@
 from flask import Flask, request, redirect, url_for, render_template, jsonify, session
 from flask_login import login_user, logout_user, LoginManager, login_required, current_user
+from flask_mail import Message
 from logging.handlers import RotatingFileHandler, SMTPHandler
-from config import app
+from config import app, mail
 import requests, logging, traceback
 
 login_manager = LoginManager()
@@ -116,6 +117,16 @@ def home():
               '&login_hint=email'
               '&approval_prompt=force').format(Google.url)
     return render_template('home.html', url=google)
+
+@app.route('/mail')
+def sendmail():
+    msg = Message("Hello",
+                  sender="redtonernd@redtone.com",
+                  recipients=["siewwingfei@hotmail.com"])
+    msg.body = render_template('mail.html', name='ben')
+    msg.html = render_template('mail.html', name='ben')
+    mail.send(msg)
+    return 'ok'
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000)
