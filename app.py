@@ -32,6 +32,10 @@ class User(object):
 class Google(object):
     url = 'http://localhost:8000/google/callback/' if app.debug else 'https://apps.redtone.com:8585/oauth/google/callback/'
 
+@app.route('/default')
+def default():
+    return render_template('login.html')
+
 @login_manager.user_loader
 def user_loader(user_id):
     o = User()
